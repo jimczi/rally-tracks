@@ -169,7 +169,8 @@ class WeightedTermsRecallRunner:
 
 
         logging.getLogger(__name__).info(
-            "avg_recall=[%.3f].", float(recall_total / exact_total))
+            "top_k=%d, num_candidates=%d, avg_recall=%.3f",
+            params["top_k"], params["num_candidates"], float(recall_total / exact_total))
         return (
             {
                 "avg_recall": recall_total / exact_total,
