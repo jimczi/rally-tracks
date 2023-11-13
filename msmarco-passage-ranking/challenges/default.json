@@ -59,25 +59,25 @@
       "operation": "text-expansion-search-maxwand-enabled",
       "warmup-iterations": 100,
       "iterations": 1000,
-      "clients": {{search_client | default(10)}}
+      "clients": {{search_client | default(1)}}
     },
     {
       "operation": "text-expansion-search-maxwand-disabled",
       "warmup-iterations": 100,
       "iterations": 1000,
-      "clients": {{search_clients | default(10)}}
+      "clients": {{search_clients | default(1)}}
     },
     {
       "operation": "pruned-text-expansion-search-maxwand-enabled",
       "warmup-iterations": 100,
       "iterations": 1000,
-      "clients": {{search_client | default(10)}}
+      "clients": {{search_client | default(1)}}
   },
     {
       "operation": "pruned-text-expansion-search-maxwand-disabled",
       "warmup-iterations": 100,
       "iterations": 1000,
-      "clients": {{search_clients | default(10)}}
+      "clients": {{search_clients | default(1)}}
   },
     {
       "operation": "pruned-all-score-text-expansion-search-maxwand-enabled",
