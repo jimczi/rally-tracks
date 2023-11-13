@@ -87,7 +87,7 @@
     "operation-type": "weighted_terms_recall",
     "param-source": "weighted_terms_recall_param_source",
     "top_k": 10,
-    "num-candidates": 10,
+    "num_candidates": 10,
     "include-in-reporting": false
  },
  {
@@ -95,7 +95,7 @@
     "operation-type": "weighted_terms_recall",
     "param-source": "weighted_terms_recall_param_source",
     "top_k": 10,
-    "num-candidates": 100,
+    "num_candidates": 100,
     "include-in-reporting": false
  },
  {
