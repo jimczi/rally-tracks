@@ -113,7 +113,40 @@ class QueryParamSource(QueryIteratorParamSource):
             return self.params()
 
 
+class RetrieverParamSource(QueryIteratorParamSource):
+    def __init__(self, track, params, **kwargs):
+        super().__init__(track, params, **kwargs)
+        self._index_name = params.get("index", track.indices[0].name if len(track.indices) == 1 else "_all")
+        self._cache = params.get("cache", True)
+        self._rerank = params.get("rerank", False)
+
+    def params(self):
+        try:
+            result = {
+                "body": {
+                    "retriever": {
+                        "standard": {
+                            "query": {
+                                "query_string": {
+                                    "query": next(self._queries_iterator), "default_field": self._params["search-fields"]
+                                }
+                            }
+                        }
+                    }
+                },
+                "size": self._params["size"],
+                "index": self._index_name,
+                "cache": self._cache,
+            }
+
+            return result
+        except StopIteration:
+            self._queries_iterator = iter(self._sample_queries)
+            return self.params()
+
+
 def register(registry):
     registry.register_param_source("query-string-search", QueryParamSource)
+    registry.register_param_source("retriever-search", RetrieverParamSource)
     registry.register_param_source("create-search-application-param-source", CreateSearchApplicationParamSource)
     registry.register_param_source("search-application-search-param-source", SearchApplicationSearchParamSource)
