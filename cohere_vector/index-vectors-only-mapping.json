@@ -10,9 +10,11 @@
   },
   "mappings": {
     "dynamic": false,
+    {%- if build_flavor != "serverless" -%}
     "_source": {
       "mode": "synthetic"
     },
+    {%- endif -%}
     "properties": {
       "emb": {
         "type": "dense_vector",
