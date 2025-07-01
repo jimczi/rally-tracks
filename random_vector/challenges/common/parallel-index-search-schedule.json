@@ -37,33 +37,27 @@
   "operation": "check-cluster-health"
 },
 {
-  "name": "initial-random-indexing",
-  "operation": "random-bulk-indexing",
-  "clients": {{ initial_index_clients | default(1) | int }},
-  "iterations": {{ initial_index_iterations | default(1000) | int }}
-},
-{
   "parallel": {
     "warmup-time-period": {{ warmup_time_period | default(30) | int }},
     "time-period": {{ time_period | default(30) | int }},
     "tasks": [
       {
-        "name": "parallel-random-indexing",
+        "name": "random-indexing",
         "operation": "random-bulk-indexing",
-        {%- if parallel_index_target_throughput is defined %}
-        "target-throughput": {{ parallel_index_target_throughput | int }},
+        {%- if index_target_throughput is defined %}
+        "target-throughput": {{ index_target_throughput | int }},
         {%- endif %}
-        "clients": {{ parallel_index_clients | default(8) | int }},
+        "clients": {{ index_clients | default(8) | int }},
         "warmup-time-period": {{ warmup_time_period | default(30) | int }},
         "time-period": {{ time_period | default(30) | int }},
         "looped": true
       },
       {
-        "name": "parallel-brute-force-filtered-search",
+        "name": "brute-force-filtered-search",
         "operation": "brute-force-filtered-search",
-        "clients": {{ parallel_search_clients | default(8) | int }},
-        {%- if parallel_search_target_throughputs is defined %}
-        "target-throughput": {{parallel_search_target_throughput | int }},
+        "clients": {{ search_clients | default(8) | int }},
+        {%- if search_target_throughputs is defined %}
+        "target-throughput": {{ search_target_throughput | int }},
         {%- endif %}
         "warmup-time-period": {{ warmup_time_period | default(30) | int }},
         "time-period": {{ time_period | default(30) | int }},

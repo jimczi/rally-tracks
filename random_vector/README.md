@@ -36,6 +36,8 @@ These operations are executed against the index using various DSL flavors, inclu
 
 This track accepts the following parameters with Rally 0.8.0+ using `--track-params`:
 
+ - data_retention (optional)
+ - dsl_rollover (optional)
  - use_synthetic_source (default: true)
  - number_of_shards (default: 1)
  - number_of_replicas (default: 0)
@@ -59,14 +61,10 @@ This track accepts the following parameters with Rally 0.8.0+ using `--track-par
 - dsl_rollover (optional)
 - index_bulk_size (default: 100)
 - partitions (default: 1000)
-- Initial indexing:
-  - initial_index_clients (default: 4)
-  - initial_index_iterations (default: 100)
-  - index_bulk_size` (default: 100)
 - Parallel search and index:
   - warmup_time_period (default: 30): Warmup time period for the parallel index search operation in second.
   - time_period (default: 120): Time period for the parallel index search operation in second.
-  - parallel_index_target_throughput (optional)
-  - parallel_index_clients (default: 8)
-  - parallel_search_target_throughput (optional)
-  - parallel_search_clients (default: 8)
+  - index_target_throughput (optional)
+  - index_clients (default: 8)
+  - search_target_throughput (optional)
+  - search_clients (default: 8)
