@@ -1,0 +1,74 @@
+{
+  "name": "delete-data-stream",
+  "operation": {
+    "operation-type": "delete-data-stream",
+    "data-stream": [
+      "vectors-benchmark-random"
+    ]
+  }
+},
+{
+  "name": "delete-templates",
+  "operation": {
+    "operation-type": "delete-composable-template"
+  }
+},
+{%- if dsl_rollover is defined %}
+{
+  "name":"update-settings",
+  "operation": {
+    "operation-type": "put-settings",
+    "body": {
+      "persistent": {
+          "cluster.lifecycle.default.rollover": "{{ dsl_rollover | string }}"
+      }
+    }
+  }
+},
+{%- endif %}
+{
+  "name": "create-templates",
+  "operation": {
+  "operation-type": "create-composable-template"
+}
+},
+{
+  "name": "check-cluster-health",
+  "operation": "check-cluster-health"
+},
+{
+  "name": "initial-random-indexing",
+  "operation": "random-bulk-indexing",
+  "clients": {{ initial_index_clients | default(1) | int }},
+  "iterations": {{ initial_index_iterations | default(1000) | int }}
+},
+{
+  "parallel": {
+    "warmup-time-period": {{ warmup_time_period | default(30) | int }},
+    "time-period": {{ time_period | default(30) | int }},
+    "tasks": [
+      {
+        "name": "parallel-random-indexing",
+        "operation": "random-bulk-indexing",
+        {%- if parallel_index_target_throughput is defined %}
+        "target-throughput": {{ parallel_index_target_throughput | int }},
+        {%- endif %}
+        "clients": {{ parallel_index_clients | default(8) | int }},
+        "warmup-time-period": {{ warmup_time_period | default(30) | int }},
+        "time-period": {{ time_period | default(30) | int }},
+        "looped": true
+      },
+      {
+        "name": "parallel-brute-force-filtered-search",
+        "operation": "brute-force-filtered-search",
+        "clients": {{ parallel_search_clients | default(8) | int }},
+        {%- if parallel_search_target_throughputs is defined %}
+        "target-throughput": {{parallel_search_target_throughput | int }},
+        {%- endif %}
+        "warmup-time-period": {{ warmup_time_period | default(30) | int }},
+        "time-period": {{ time_period | default(30) | int }},
+        "looped": true
+      }
+    ]
+  }
+}

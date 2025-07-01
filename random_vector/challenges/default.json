@@ -54,4 +54,12 @@
       "clients": {{ search_clients | default(8) | int }}
     }
   ]
+},
+{
+  "name": "parallel-index-search",
+  "description": "Benchmark concurrent queries and bulk indexing",
+  "default": false,
+  "schedule": [
+    {{ rally.collect(parts="common/parallel-index-search-schedule.json") }}
+  ]
 }

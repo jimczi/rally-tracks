@@ -3,6 +3,11 @@
   "priority": 500,
   "data_stream": {},
   "template": {
+    "lifecycle": {
+      {%- if data_retention is defined %}
+      "data_retention": "{{ data_retention | string }}"
+      {%- endif -%}
+    },
     "settings": {
       {# non-serverless-index-settings-marker-start #}{%- if build_flavor != "serverless" or serverless_operator == true -%}
       "number_of_shards": {{number_of_shards | default(1)}},
